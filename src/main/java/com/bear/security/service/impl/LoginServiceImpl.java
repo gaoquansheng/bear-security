@@ -1,5 +1,6 @@
 package com.bear.security.service.impl;
 
+import com.bear.security.authentication.*;
 import com.bear.security.service.LoginService;
 import com.bear.security.vo.LoginVO;
 import com.bear.security.vo.SmsLoginVO;
@@ -27,6 +28,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String smsLogin(SmsLoginVO smsLoginVO) {
-        return null;
+
+        SmsAuthentication token = new SmsAuthentication(smsLoginVO.getPhone(), smsLoginVO.getCode());
+
+        Authentication authenticate = authenticationManager.authenticate(token);
+        return authenticate.getName();
     }
 }
