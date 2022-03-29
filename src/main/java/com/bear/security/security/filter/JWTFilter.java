@@ -1,4 +1,4 @@
-package com.bear.security.filter;
+package com.bear.security.security.filter;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

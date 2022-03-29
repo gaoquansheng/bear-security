@@ -1,4 +1,4 @@
-package com.bear.security.config;
+package com.bear.security.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

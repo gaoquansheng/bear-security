@@ -1,24 +1,22 @@
-package com.bear.security.provider;
+package com.bear.security.security.provider;
 
-import com.bear.security.authentication.*;
+import com.bear.security.security.authentication.SmsAuthentication;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+//@Component
 public class SmsProvider implements AuthenticationProvider {
 
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        SmsAuthentication smsAuthentication = (SmsAuthentication) authentication;
-        String phone = smsAuthentication.getPhone();
-        String code = smsAuthentication.getCode();
+        Object phone = authentication.getPrincipal();
+        Object code = authentication.getCredentials();
         String tmpPhone = "15516392395";
         String tmpCode = "211318";
         if (tmpPhone.equals(phone) && tmpCode.equals(code)) {

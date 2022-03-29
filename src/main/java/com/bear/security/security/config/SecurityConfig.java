@@ -1,13 +1,11 @@
-package com.bear.security.config;
+package com.bear.security.security.config;
 
 
-import com.bear.security.filter.JWTFilter;
-import com.bear.security.provider.SmsProvider;
+import com.bear.security.security.filter.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,8 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTFilter jwtFilter;
 
-    @Autowired
-    private SmsProvider smsProvider;
+//    @Autowired
+//    private SmsProvider smsProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,10 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(smsProvider);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(smsProvider);
+//    }
 
     @Bean
     @Override

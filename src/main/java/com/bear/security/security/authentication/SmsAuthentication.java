@@ -1,4 +1,4 @@
-package com.bear.security.authentication;
+package com.bear.security.security.authentication;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,22 +8,17 @@ import java.util.Collection;
 
 public class SmsAuthentication extends AbstractAuthenticationToken {
 
-    // 自定义属性
-    private String phone;
-    private String code;
-
-    private Object principal;
+    private static final long serialVersionUID = 560L;
+    private final Object principal;
     private Object credentials;
 
-    // 自定义构造方法， 用于赋值手机号和验证码
-    public SmsAuthentication(String phone, String code) {
+    public SmsAuthentication(Object principal, Object credentials) {
         super((Collection)null);
-        this.phone = phone;
-        this.code = code;
+        this.principal = principal;
+        this.credentials = credentials;
         this.setAuthenticated(false);
     }
 
-    // 用于验证成功之后的构造
     public SmsAuthentication(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
@@ -47,13 +42,5 @@ public class SmsAuthentication extends AbstractAuthenticationToken {
     public void eraseCredentials() {
         super.eraseCredentials();
         this.credentials = null;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getCode() {
-        return code;
     }
 }
