@@ -14,12 +14,14 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    // 登录方式一 ： 用户名密码登录
     @PostMapping("/login")
     public String login(@RequestBody LoginVO loginVO) {
 
         return loginService.login(loginVO);
     }
 
+    // 登录方式二 ：手机号和验证码登录
     @PostMapping("/sms/login")
     public String smsLogin(@RequestBody SmsLoginVO smsLoginVO) {
 

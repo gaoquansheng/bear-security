@@ -1,9 +1,0 @@
-server:
-  port: 8080
-
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/bear?characterEncoding=utf-8&serverTimezone=UTC
-    username: root
-    password: gm211318
-    driver-class-name: com.mysql.cj.jdbc.Driver
