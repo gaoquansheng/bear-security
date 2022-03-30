@@ -15,5 +15,4 @@ public class SecurityBeanConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
