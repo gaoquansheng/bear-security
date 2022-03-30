@@ -6,19 +6,26 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 
+/**
+ * 短信验证码登录的身份验证信息
+ */
 public class SmsAuthentication extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = 560L;
-    private final Object principal;
+    private Object principal;
     private Object credentials;
+    private String phone;
+    private String code;
 
-    public SmsAuthentication(Object principal, Object credentials) {
+    // 认证之前的构造函数
+    public SmsAuthentication(String phone, String code) {
         super((Collection)null);
-        this.principal = principal;
-        this.credentials = credentials;
+        this.phone = phone;
+        this.code = code;
         this.setAuthenticated(false);
     }
 
+    // 认证之后的构造函数
     public SmsAuthentication(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
@@ -42,5 +49,13 @@ public class SmsAuthentication extends AbstractAuthenticationToken {
     public void eraseCredentials() {
         super.eraseCredentials();
         this.credentials = null;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getCode() {
+        return code;
     }
 }

@@ -1,12 +1,8 @@
 package com.bear.security.service.impl;
 
-import com.bear.security.security.authentication.*;
 import com.bear.security.service.LoginService;
-import com.bear.security.vo.LoginVO;
-import com.bear.security.vo.SmsLoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +13,40 @@ public class LoginServiceImpl implements LoginService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public String login(LoginVO loginVO) {
+    public String login(Authentication authentication) {
 
-        Authentication token = new UsernamePasswordAuthenticationToken(loginVO.getUsername(), loginVO.getPassword());
+        try {
+            Authentication authenticate = authenticationManager.authenticate(authentication);
+            return this.successHandler(authenticate);
+        }catch (Exception e) {
+            return this.failureHandler(e);
+        }
 
-        Authentication authenticate = authenticationManager.authenticate(token);
-
-        return authenticate.getName();
     }
 
-    @Override
-    public String smsLogin(SmsLoginVO smsLoginVO) {
+    private String successHandler(Authentication authentication) {
+        return "登录成功";
+    }
 
-        SmsAuthentication token = new SmsAuthentication(smsLoginVO.getPhone(), smsLoginVO.getCode());
+    private String failureHandler(Exception exception) {
 
-        Authentication authenticate = authenticationManager.authenticate(token);
-        return authenticate.getName();
+        String message = null;
+        if (exception instanceof LockedException) {
+            message = "账户被锁定，请联系管理员!";
+        } else if (exception instanceof CredentialsExpiredException) {
+            message = "密码过期，请联系管理员!";
+
+        } else if (exception instanceof AccountExpiredException) {
+            message = "账户过期，请联系管理员!";
+
+        } else if (exception instanceof DisabledException) {
+            message = "账户被禁用，请联系管理员!";
+
+        } else if (exception instanceof BadCredentialsException) {
+            message = "用户名或者密码输入错误，请联系管理员!";
+        }else {
+            message = "账户异常";
+        }
+        return message;
     }
 }

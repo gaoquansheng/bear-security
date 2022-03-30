@@ -7,3 +7,6 @@ spring:
     username: root
     password: gm211318
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  main:
+    allow-circular-references: true

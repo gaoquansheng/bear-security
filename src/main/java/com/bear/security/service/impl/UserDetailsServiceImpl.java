@@ -3,6 +3,7 @@ package com.bear.security.service.impl;
 import com.bear.security.entity.SecurityUser;
 import com.bear.security.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Lazy
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired

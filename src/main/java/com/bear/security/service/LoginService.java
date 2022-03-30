@@ -1,11 +1,9 @@
 package com.bear.security.service;
 
-import com.bear.security.vo.LoginVO;
-import com.bear.security.vo.SmsLoginVO;
+import org.springframework.security.core.Authentication;
 
 public interface LoginService {
 
-    String login(LoginVO loginVO);
+    String login(Authentication authentication);
 
-    String smsLogin(SmsLoginVO smsLoginVO);
 }
