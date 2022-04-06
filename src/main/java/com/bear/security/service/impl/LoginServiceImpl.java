@@ -25,6 +25,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private String successHandler(Authentication authentication) {
+        Object details = authentication.getDetails();
         return "登录成功";
     }
 

@@ -29,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTFilter jwtFilter;
 
     @Autowired
+    private DaoAuthenticationProvider daoAuthenticationProvider;
+
+    @Autowired
     private SmsProvider smsProvider;
 
     @Autowired
@@ -51,13 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.formLogin()
-                .successHandler(loginSuccessHandler)
-                .failureHandler(failureHandler);
-        http.logout().logoutSuccessHandler(logoutHandler);
 
         http.authorizeRequests()
-                .antMatchers( "/user/login","/user/sms/login").anonymous()
+                .antMatchers("/user/login", "/user/sms/login").anonymous()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -65,13 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(smsProvider);
 
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-        auth.authenticationProvider(daoAuthenticationProvider);
-//        daoAuthenticationProvider.setPasswordEncoder();
+        auth.authenticationProvider(smsProvider)
+                .authenticationProvider(daoAuthenticationProvider);
     }
 
 
