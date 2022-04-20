@@ -1,7 +1,8 @@
 package com.bear.security.security.config;
 
 
-import com.bear.security.security.filter.JWTFilter;
+import com.bear.security.security.UnauthorizedEntryPoint;
+import com.bear.security.security.filter.SmsFilter;
 import com.bear.security.security.handler.LoginFailureHandler;
 import com.bear.security.security.handler.LoginSuccessHandler;
 import com.bear.security.security.handler.LogoutHandler;
@@ -14,8 +15,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -26,16 +25,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JWTFilter jwtFilter;
-
-    @Autowired
     private DaoAuthenticationProvider daoAuthenticationProvider;
 
     @Autowired
     private SmsProvider smsProvider;
 
     @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
+    private LoginSuccessHandler successHandler;
 
     @Autowired
     private LoginFailureHandler failureHandler;
@@ -44,22 +40,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private LogoutHandler logoutHandler;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private SmsFilter smsFilter;
+
+    @Autowired
+    private UnauthorizedEntryPoint unauthorizedEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.authorizeRequests()
-                .antMatchers("/user/login", "/user/sms/login").anonymous()
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint)
+                .and()
+                .authorizeRequests()
                 .anyRequest().authenticated();
-
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//                .and()
+//                .formLogin().successHandler(successHandler).failureHandler(failureHandler);
+        smsFilter.setAuthenticationSuccessHandler(successHandler);
+        http.addFilterAt(smsFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
