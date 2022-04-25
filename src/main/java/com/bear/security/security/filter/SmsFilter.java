@@ -32,8 +32,8 @@ public class SmsFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
         String code = request.getParameter("code");
-        UsernamePasswordAuthenticationToken authRequest = new SmsAuthentication("bera", "123456", code);
-
+        String phone = request.getParameter("phone");
+        UsernamePasswordAuthenticationToken authRequest = new SmsAuthentication(null, null, phone, code);
         this.setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }

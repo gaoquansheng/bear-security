@@ -1,4 +1,4 @@
-package com.bear.security.security;
+package com.bear.security.security.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -8,16 +8,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-/**
- * @description:
- * @author: fengchangxin
- * @create: 2019-06-10 15:43
- */
-@Component("unauthorizedEntryPoint")
+
+@Component
 public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         System.out.println("未授权");
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        writer.write("未授权");
+        writer.flush();
+        writer.close();
     }
 }

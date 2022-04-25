@@ -1,7 +1,6 @@
 package com.bear.security.security.config;
 
 
-import com.bear.security.security.UnauthorizedEntryPoint;
 import com.bear.security.security.filter.SmsFilter;
 import com.bear.security.security.handler.LoginFailureHandler;
 import com.bear.security.security.handler.LoginSuccessHandler;
@@ -55,9 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();
-//                .and()
-//                .formLogin().successHandler(successHandler).failureHandler(failureHandler);
         smsFilter.setAuthenticationSuccessHandler(successHandler);
+        smsFilter.setAuthenticationFailureHandler(failureHandler);
+
         http.addFilterAt(smsFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
